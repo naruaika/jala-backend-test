@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductCreateRequest;
 use App\Models\Product;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -16,6 +18,10 @@ class ProductController extends Controller
      */
     public function index()
     {
+        if (! Gate::check('viewAny', Product::class)) {
+            return redirect(RouteServiceProvider::HOME);
+        }
+
         return Inertia::render('Products/Index', [
             'products' => Product::latest()->get(),
         ]);
@@ -29,6 +35,10 @@ class ProductController extends Controller
      */
     public function store(ProductCreateRequest $request)
     {
+        if (! Gate::check('create', Product::class)) {
+            abort(403);
+        }
+
         $validatedInput = $request->validated();
 
         $validatedInput['slug'] = $request->name;

@@ -49,4 +49,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+
+    /**
+     * Check if the user is an administrator.
+     */
+    public function isAdministrator()
+    {
+        return in_array('admin', $this->roles->pluck('slug')->toArray());
+    }
 }

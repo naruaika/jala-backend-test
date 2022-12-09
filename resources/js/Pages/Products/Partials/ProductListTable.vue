@@ -34,7 +34,7 @@ defineProps(['products']);
                     v-else
                     v-for="(product, index) in products"
                     :key="product.id"
-                    :class="index < products.length - 1 ? 'border-b' : ''"
+                    :class="{'border-b': index < products.length - 1}"
                     class="bg-white hover:bg-gray-50"
                 >
                     <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
