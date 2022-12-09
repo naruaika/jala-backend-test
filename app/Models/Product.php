@@ -28,7 +28,7 @@ class Product extends Model
      */
     public function setSlugAttribute($value)
     {
-        $value .= substr(hash('xxh3', time()), 0, 5);
+        $value .= '-'.substr(hash('xxh3', time()), 0, 5);
         $this->attributes['slug'] = Str::slug($value, '-');
     }
 }
