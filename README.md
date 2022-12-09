@@ -14,9 +14,9 @@ To run the application, execute below commands in terminal:
 
 ```sh
 # Clone this repository
-git clone git@github.com:naruaika/psn-technical-test.git
+git clone git@github.com:naruaika/jala-backend-test.git
 
-cd psn-technical-test
+cd jala-backend-test
 
 # Setup the project
 cp .env.example .env
