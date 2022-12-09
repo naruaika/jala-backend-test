@@ -1,4 +1,4 @@
-# Technical Test - Backed Engineer
+# Technical Test - Backend Engineer
 
 ???
 
@@ -33,7 +33,7 @@ php artisan key:generate
 php artisan migrate
 ```
 
-To run the application, you can execute below command in terminal:
+To run the application, you can execute below command:
 
 ```sh
 # Run in development mode
@@ -43,13 +43,13 @@ npm run dev
 npm run build
 ```
 
-In case you want to seed the database with dummy data, you can execute below command in terminal:
+In case you want to seed the database with dummy data, you can execute below command:
 
 ```sh
 php artisan migrate:fresh --seed
 ```
 
-To run the application tests, you can execute below command in terminal:
+To run the application tests, you can execute below command:
 
 ```sh
 php artisan test
