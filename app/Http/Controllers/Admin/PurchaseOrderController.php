@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseOrderCreateRequest;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
@@ -25,7 +26,7 @@ class PurchaseOrderController extends Controller
             return redirect(RouteServiceProvider::HOME);
         }
 
-        return Inertia::render('PurchaseOrders/Index', [
+        return Inertia::render('Admin/PurchaseOrders/Index', [
             'products' => Product::orderBy('sku')->get(),
             'purchaseOrders' => PurchaseOrder::latest()->get(),
             'permissions' => [
@@ -81,6 +82,6 @@ class PurchaseOrderController extends Controller
             $purchaseOrder->update(['price' => $totalPrice]);
         });
 
-        return Redirect::route('purchase-orders.index');
+        return Redirect::route('admin.purchase-orders.index');
     }
 }

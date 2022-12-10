@@ -44,7 +44,7 @@ defineProps(['products']);
                         {{ product.name }}
                     </td>
                     <td class="py-4 px-6">
-                        Rp {{ product.price }}
+                        Rp {{ Number(product.price).toLocaleString() }}
                     </td>
                     <td class="py-4 px-6">
                         {{ product.stock }}

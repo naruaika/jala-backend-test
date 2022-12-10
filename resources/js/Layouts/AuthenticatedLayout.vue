@@ -34,10 +34,10 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
 
                                 <template v-if="$page.props.auth.isAdministrator">
-                                    <NavLink :href="route('products.index')" :active="route().current('products.index')">
+                                    <NavLink :href="route('admin.products.index')" :active="route().current('admin.products.index')">
                                         Products
                                     </NavLink>
-                                    <NavLink :href="route('purchase-orders.index')" :active="route().current('purchase-orders.index')">
+                                    <NavLink :href="route('admin.purchase-orders.index')" :active="route().current('admin.purchase-orders.index')">
                                         Purchase Orders
                                     </NavLink>
                                 </template>
@@ -126,10 +126,10 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
 
                         <template v-if="$page.props.auth.isAdministrator">
-                            <ResponsiveNavLink :href="route('products.index')" :active="route().current('products.index')">
+                            <ResponsiveNavLink :href="route('admin.products.index')" :active="route().current('admin.products.index')">
                                 Products
                             </ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('purchase-orders.index')" :active="route().current('purchase-orders.index')">
+                            <ResponsiveNavLink :href="route('admin.purchase-orders.index')" :active="route().current('admin.purchase-orders.index')">
                                 Purchase Orders
                             </ResponsiveNavLink>
                         </template>

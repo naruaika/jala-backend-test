@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductCreateRequest;
 use App\Models\Product;
 use App\Providers\RouteServiceProvider;
@@ -22,7 +23,7 @@ class ProductController extends Controller
             return redirect(RouteServiceProvider::HOME);
         }
 
-        return Inertia::render('Products/Index', [
+        return Inertia::render('Admin/Products/Index', [
             'products' => Product::latest()->get(),
             'permissions' => [
                 'create' => Gate::allows('create', Product::class),
@@ -48,6 +49,6 @@ class ProductController extends Controller
 
         Product::create($validatedInput);
 
-        return Redirect::route('products.index');
+        return Redirect::route('admin.products.index');
     }
 }

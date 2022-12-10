@@ -24,7 +24,7 @@ const showModal = () => {
 };
 
 const createProduct = () => {
-    form.post(route('products.store'), {
+    form.post(route('admin.products.store'), {
         preserveScroll: true,
         onBefore: () => form.clearErrors(),
         onSuccess: () => closeModal(),

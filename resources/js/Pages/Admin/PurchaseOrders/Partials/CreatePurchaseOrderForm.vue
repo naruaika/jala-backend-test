@@ -41,7 +41,7 @@ const showModal = () => {
 };
 
 const createPurchaseOrder = () => {
-    form.post(route('purchase-orders.store'), {
+    form.post(route('admin.purchase-orders.store'), {
         preserveScroll: true,
         onBefore: () => form.clearErrors(),
         onSuccess: () => closeModal(),
