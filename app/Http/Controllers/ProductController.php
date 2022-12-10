@@ -18,12 +18,15 @@ class ProductController extends Controller
      */
     public function index()
     {
-        if (! Gate::check('viewAny', Product::class)) {
+        if (! Gate::allows('viewAny', Product::class)) {
             return redirect(RouteServiceProvider::HOME);
         }
 
         return Inertia::render('Products/Index', [
             'products' => Product::latest()->get(),
+            'permissions' => [
+                'create' => Gate::allows('create', Product::class),
+            ],
         ]);
     }
 
@@ -35,7 +38,7 @@ class ProductController extends Controller
      */
     public function store(ProductCreateRequest $request)
     {
-        if (! Gate::check('create', Product::class)) {
+        if (! Gate::allows('create', Product::class)) {
             abort(403);
         }
 

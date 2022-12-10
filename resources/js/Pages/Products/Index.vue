@@ -4,7 +4,7 @@ import CreateProductForm from './Partials/CreateProductForm.vue';
 import ProductListTable from './Partials/ProductListTable.vue';
 import { Head } from '@inertiajs/inertia-vue3';
 
-defineProps(['products']);
+defineProps(['products', 'permissions']);
 </script>
 
 <template>
@@ -17,7 +17,7 @@ defineProps(['products']);
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <CreateProductForm />
+                <CreateProductForm v-if="permissions.create" />
 
                 <ProductListTable :products="products" />
             </div>
