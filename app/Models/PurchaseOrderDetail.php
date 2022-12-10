@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+class PurchaseOrderDetail extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -17,19 +16,18 @@ class Product extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'sku',
-        'name',
-        'slug',
+        'purchase_order_id',
+        'product_id',
+        'quantity',
         'price',
-        'stock',
+        'subtotal',
     ];
 
     /**
-     * Set the slug attribute for the product.
+     * The product that belong to the purchase order.
      */
-    public function setSlugAttribute($value)
+    public function product()
     {
-        $value .= '-'.substr(hash('xxh3', time()), 0, 5);
-        $this->attributes['slug'] = Str::slug($value, '-');
+        return $this->hasOne(Product::class);
     }
 }

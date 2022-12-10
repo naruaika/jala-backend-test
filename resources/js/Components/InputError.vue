@@ -1,11 +1,24 @@
 <script setup>
-defineProps(['message']);
+defineProps({
+    'message': {
+        type: String,
+        required: true,
+    },
+    'replaceFrom': {
+        type: String,
+        default: '',
+    },
+    'replaceTo': {
+        type: String,
+        default: '',
+    },
+});
 </script>
 
 <template>
     <div v-show="message">
         <p class="text-sm text-red-600">
-            {{ message }}
+            {{ message?.replace(replaceFrom, replaceTo) }}
         </p>
     </div>
 </template>

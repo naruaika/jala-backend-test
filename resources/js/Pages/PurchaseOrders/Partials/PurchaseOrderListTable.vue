@@ -1,5 +1,7 @@
 <script setup>
-defineProps(['products']);
+import moment from 'moment';
+
+defineProps(['purchaseOrders']);
 </script>
 
 <template>
@@ -8,46 +10,40 @@ defineProps(['products']);
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                     <th scope="col" class="py-3 px-6">
-                        SKU
+                        Invoice No.
                     </th>
                     <th scope="col" class="py-3 px-6">
-                        Name
+                        Total Cost
                     </th>
                     <th scope="col" class="py-3 px-6">
-                        Unit Price
-                    </th>
-                    <th scope="col" class="py-3 px-6">
-                        Stock
+                        Created At
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr
-                    v-if="products.length === 0"
+                    v-if="purchaseOrders.length === 0"
                     class="bg-white"
                 >
-                    <td colspan="4" class="py-4 px-6 text-center">
+                    <td colspan="3" class="py-4 px-6 text-center">
                         No data.
                     </td>
                 </tr>
                 <tr
                     v-else
-                    v-for="(product, index) in products"
-                    :key="product.id"
-                    :class="{'border-b': index < products.length - 1}"
+                    v-for="(purchaseOrder, index) in purchaseOrders"
+                    :key="purchaseOrder.id"
+                    :class="{'border-b': index < purchaseOrders.length - 1}"
                     class="bg-white hover:bg-gray-50"
                 >
                     <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
-                        {{ product.sku }}
+                        {{ purchaseOrder.invoice_number }}
                     </th>
                     <td class="py-4 px-6">
-                        {{ product.name }}
+                        Rp {{ purchaseOrder.price }}
                     </td>
                     <td class="py-4 px-6">
-                        Rp {{ product.price }}
-                    </td>
-                    <td class="py-4 px-6">
-                        {{ product.stock }}
+                        {{ moment(purchaseOrder.created_at).format('Do MMM YYYY') }}
                     </td>
                 </tr>
             </tbody>

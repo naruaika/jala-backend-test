@@ -17,7 +17,7 @@ defineProps(['products', 'permissions']);
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <CreateProductForm v-if="permissions.create" />
+                <CreateProductForm v-show="permissions.create" />
 
                 <ProductListTable :products="products" />
             </div>

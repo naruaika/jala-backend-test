@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('/products', ProductController::class)->only(['index', 'store']);
+    Route::resource('/purchase-orders', PurchaseOrderController::class)->only(['index', 'store']);
 });
 
 
