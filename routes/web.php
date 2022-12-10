@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\PurchaseOrderController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\PurchaseOrderController as AdminPurchaseOrderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -32,14 +33,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
     Route::prefix('admin')->group(function () {
-        Route::resource('products', ProductController::class)
+        Route::resource('products', AdminProductController::class)
             ->only(['index', 'store'])
             ->names([
                 'index' => 'admin.products.index',
                 'store' => 'admin.products.store',
             ]);
-        Route::resource('purchase-orders', PurchaseOrderController::class)
+        Route::resource('purchase-orders', AdminPurchaseOrderController::class)
             ->only(['index', 'store'])
             ->names([
                 'index' => 'admin.purchase-orders.index',
