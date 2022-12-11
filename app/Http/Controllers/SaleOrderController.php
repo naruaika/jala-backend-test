@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PurchaseOrderCreateRequest;
+use App\Http\Requests\SaleOrderCreateRequest;
 use App\Models\Product;
-use App\Models\PurchaseOrder;
-use App\Models\PurchaseOrderDetail;
+use App\Models\SaleOrder;
+use App\Models\SaleOrderDetail;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
-class PurchaseOrderController extends Controller
+class SaleOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,22 +23,22 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('viewAny', PurchaseOrder::class)) {
+        if (! Gate::allows('viewAny', SaleOrder::class)) {
             return redirect(RouteServiceProvider::HOME);
         }
 
-        return Inertia::render('Admin/PurchaseOrders/Index', [
+        return Inertia::render('SaleOrders/Index', [
             'products' => Product::query()
                 ->select('sku', 'name', 'price', 'stock')
                 ->where('stock', '>', 0)
                 ->orderBy('sku')
                 ->get(),
-            'purchaseOrders' => PurchaseOrder::query()
-                ->select('invoice_number', 'price', 'created_at')
+            'saleOrders' => SaleOrder::query()
+                ->select('customer_name', 'price', 'status', 'created_at')
                 ->latest()
                 ->get(),
             'permissions' => [
-                'create' => Gate::allows('create', PurchaseOrder::class),
+                'create' => Gate::allows('create', SaleOrder::class),
             ],
         ]);
     }
@@ -45,12 +46,12 @@ class PurchaseOrderController extends Controller
     /**
      * Create a new resource.
      *
-     * @param  \App\Http\Requests\PurchaseOrderCreateRequest  $request
+     * @param  \App\Http\Requests\SaleOrderCreateRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(PurchaseOrderCreateRequest $request)
+    public function store(SaleOrderCreateRequest $request)
     {
-        if (! Gate::allows('create', PurchaseOrder::class)) {
+        if (! Gate::allows('create', SaleOrder::class)) {
             abort(403);
         }
 
@@ -65,24 +66,35 @@ class PurchaseOrderController extends Controller
 
             $totalPrice = 0;
 
-            // Create a new purchase order
-            $purchaseOrder = PurchaseOrder::create([
-                'invoice_number' => $input['invoice_number'],
+            // Re-validate the request after the related product record is locked
+            $rules = [];
+            foreach ($input['products'] as $index => $product) {
+                $product = $products->where('sku', $product['sku'])->first();
+                $rules['products.'.$index.'.quantity'] = 'integer|max:'.$product->stock;
+            }
+            Validator::validate($input, $rules);
+
+            // Create a new sale order
+            $saleOrder = SaleOrder::create([
+                'invoice_number' => null,
+                'customer_name' => $input['customer_name'],
                 'price' => $totalPrice,
+                'status' => 'pending',
+                'created_by' => auth()->user()->id,
             ]);
 
             foreach ($input['products'] as $inputedProduct) {
                 $referencedProduct = $products->where('sku', $inputedProduct['sku'])->first();
 
-                // Calculate the subtotal of the purchase order detail
+                // Calculate the subtotal of the sale order detail
                 $subtotal = $inputedProduct['quantity'] * $inputedProduct['price'];
 
-                // Update the total transaction cost of the purchase order
+                // Update the total transaction cost of the sale order
                 $totalPrice += $subtotal;
 
-                // Create a new purchase order detail
-                PurchaseOrderDetail::create([
-                    'purchase_order_id' => $purchaseOrder->id,
+                // Create a new sale order detail
+                SaleOrderDetail::create([
+                    'sale_order_id' => $saleOrder->id,
                     'product_id' => $referencedProduct->id,
                     'quantity' => $inputedProduct['quantity'],
                     'price' => $inputedProduct['price'],
@@ -90,14 +102,14 @@ class PurchaseOrderController extends Controller
                 ]);
 
                 // Update the stock of the related product
-                $stock = $referencedProduct->stock + $inputedProduct['quantity'];
+                $stock = $referencedProduct->stock - $inputedProduct['quantity'];
                 $referencedProduct->update(['stock' => $stock]);
             }
 
-            // Store the total transaction cost of the purchase order
-            $purchaseOrder->update(['price' => $totalPrice]);
+            // Store the total transaction cost of the sale order
+            $saleOrder->update(['price' => $totalPrice]);
         });
 
-        return Redirect::route('admin.purchase-orders.index');
+        return Redirect::route('sale-orders.index');
     }
 }

@@ -3,11 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Models\Product;
-use App\Models\PurchaseOrder;
+use App\Models\SaleOrder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class PurchaseOrderCreateRequest extends FormRequest
+class SaleOrderCreateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,7 +17,8 @@ class PurchaseOrderCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'invoice_number' => ['required', 'string', 'max:255', Rule::unique(PurchaseOrder::class)],
+            'invoice_number' => ['sometimes', 'required', 'string', 'max:255', Rule::unique(SaleOrder::class)],
+            'customer_name' => ['required', 'string', 'max:255'],
             'products' => ['required', 'array'],
             'products.*.sku' => ['required', 'string', 'max:12', Rule::exists(Product::class, 'sku')],
             'products.*.quantity' => ['required', 'integer', 'min:0', 'max:4294967295'],

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\PurchaseOrderController as AdminPurchaseOrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleOrderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/sale-orders', [SaleOrderController::class, 'index'])->name('sale-orders.index');
+    Route::post('/sale-orders', [SaleOrderController::class, 'store'])->name('sale-orders.store');
 
     Route::prefix('admin')->group(function () {
         Route::resource('products', AdminProductController::class)

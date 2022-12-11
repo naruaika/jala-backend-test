@@ -11,10 +11,10 @@ import { nextTick, ref } from 'vue';
 defineProps(['products']);
 
 const showingModal = ref(false);
-const invoiceNumberInput = ref(null);
+const customerNameInput = ref(null);
 
 var form = useForm({
-    invoice_number: '',
+    customer_name: '',
     products: [],
 });
 
@@ -38,11 +38,11 @@ const showModal = () => {
 
     addNewProductForm();
 
-    nextTick(() => invoiceNumberInput.value.focus());
+    nextTick(() => customerNameInput.value.focus());
 };
 
-const createPurchaseOrder = () => {
-    form.post(route('admin.purchase-orders.store'), {
+const createSaleOrder = () => {
+    form.post(route('sale-orders.store'), {
         preserveScroll: true,
         onBefore: () => form.clearErrors(),
         onSuccess: () => closeModal(),
@@ -50,6 +50,12 @@ const createPurchaseOrder = () => {
         onFinish: () => {},
     });
 };
+
+const changeProduct = (index, product) => {
+    document.getElementById(`quantity-${index}`).max = product.stock;
+    form.products[index].quantity = '';
+    form.products[index].price = product.price;
+}
 
 const closeModal = () => {
     showingModal.value = false;
@@ -61,32 +67,32 @@ const closeModal = () => {
 
 <template>
     <section class="mb-6">
-        <PrimaryButton @click="showModal"> + Add New Purchase Order </PrimaryButton>
+        <PrimaryButton @click="showModal"> + Add New Sale Order </PrimaryButton>
 
         <Modal :show="showingModal" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    Add New Purchase Order
+                    Add New Sale Order
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600">
-                    To avoid data duplication, please ensure that the purchase order you want to add doesn't already exist.
+                    To avoid data duplication, please ensure that the sale order you want to add doesn't already exist.
                 </p>
 
                 <div class="mt-6">
-                    <InputLabel for="invoice-number" value="Invoice Number" />
+                    <InputLabel for="customer-name" value="Customer Name" />
 
                     <TextInput
-                        id="invoice-number"
-                        ref="invoiceNumberInput"
-                        v-model="form.invoice_number"
+                        id="customer-name"
+                        ref="customerNameInput"
+                        v-model="form.customer_name"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder=""
-                        @keyup.enter="createPurchaseOrder"
+                        @keyup.enter="createSaleOrder"
                     />
 
-                    <InputError :message="form.errors.invoice_number" class="mt-2" />
+                    <InputError :message="form.errors.customer_name" class="mt-2" />
                 </div>
 
                 <template v-for="(product, index) in form.products">
@@ -102,7 +108,11 @@ const closeModal = () => {
                             :class="'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm'"
                         >
                             <option value="" disabled>Please select one</option>
-                            <option v-for="option in $page.props.products" :value="option.sku">
+                            <option
+                                v-for="option in $page.props.products"
+                                :value="option.sku"
+                                @click="changeProduct(index, option)"
+                            >
                                 {{ option.sku }} {{ option.name }}
                             </option>
                         </select>
@@ -126,7 +136,7 @@ const closeModal = () => {
                             max="4294967295"
                             class="mt-1 block w-3/4"
                             placeholder=""
-                            @keyup.enter="createPurchaseOrder"
+                            @keyup.enter="createSaleOrder"
                         />
 
                         <InputError
@@ -146,7 +156,7 @@ const closeModal = () => {
                             type="text"
                             class="mt-1 block w-3/4"
                             placeholder=""
-                            @keyup.enter="createPurchaseOrder"
+                            @keyup.enter="createSaleOrder"
                         />
 
                         <InputError
@@ -179,9 +189,9 @@ const closeModal = () => {
                     <PrimaryButton
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
-                        @click="createPurchaseOrder"
+                        @click="createSaleOrder"
                     >
-                        Add New Purchase Order
+                        Add New Sale Order
                     </PrimaryButton>
                 </div>
             </div>

@@ -43,7 +43,7 @@ defineProps(['purchaseOrders']);
                         Rp {{ Number(purchaseOrder.price).toLocaleString() }}
                     </td>
                     <td class="py-4 px-6">
-                        {{ moment(purchaseOrder.created_at).format('Do MMM YYYY') }}
+                        {{ moment(purchaseOrder.created_at).format('DD/MM/YYYY HH:mm:ss') }}
                     </td>
                 </tr>
             </tbody>

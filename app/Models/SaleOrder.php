@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PurchaseOrder extends Model
+class SaleOrder extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -17,6 +17,9 @@ class PurchaseOrder extends Model
      */
     protected $fillable = [
         'invoice_number',
+        'customer_name',
         'price',
+        'status',
+        'created_by',
     ];
 }

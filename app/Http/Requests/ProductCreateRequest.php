@@ -18,7 +18,7 @@ class ProductCreateRequest extends FormRequest
         return [
             'sku' => ['required', 'string', 'max:12', Rule::unique(Product::class)],
             'name' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'string', 'max_digits:18'],
+            'price' => ['required', 'numeric', 'min:0', 'max:999999999'],
         ];
     }
 }

@@ -46,6 +46,9 @@ const showingNavigationDropdown = ref(false);
                                     <NavLink :href="route('products.index')" :active="route().current('products.index')">
                                         Products
                                     </NavLink>
+                                    <NavLink :href="route('sale-orders.index')" :active="route().current('sale-orders.index')">
+                                        Sale Orders
+                                    </NavLink>
                                 </template>
                             </div>
                         </div>
@@ -141,9 +144,12 @@ const showingNavigationDropdown = ref(false);
                         </template>
 
                         <template v-else>
-                            <NavLink :href="route('products.index')" :active="route().current('products.index')">
+                            <ResponsiveNavLink :href="route('products.index')" :active="route().current('products.index')">
                                 Products
-                            </NavLink>
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('sale-orders.index')" :active="route().current('sale-orders.index')">
+                                Sale Orders
+                            </ResponsiveNavLink>
                         </template>
                     </div>
 

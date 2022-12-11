@@ -24,7 +24,10 @@ class ProductController extends Controller
         }
 
         return Inertia::render('Admin/Products/Index', [
-            'products' => Product::latest()->get(),
+            'products' => Product::query()
+                ->select('sku', 'name', 'price', 'stock')
+                ->latest()
+                ->get(),
             'permissions' => [
                 'create' => Gate::allows('create', Product::class),
             ],

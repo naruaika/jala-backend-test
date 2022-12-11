@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PurchaseOrderDetail extends Model
+class SaleOrderDetail extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -16,7 +16,7 @@ class PurchaseOrderDetail extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'purchase_order_id',
+        'sale_order_id',
         'product_id',
         'quantity',
         'price',
@@ -24,15 +24,15 @@ class PurchaseOrderDetail extends Model
     ];
 
     /**
-     * The purchase order that belong to the purchase order detail.
+     * The sale order that belong to the sale order detail.
      */
-    public function purchaseOrder()
+    public function saleOrder()
     {
-        return $this->hasOne(PurchaseOrder::class);
+        return $this->hasOne(SaleOrder::class);
     }
 
     /**
-     * The product that belong to the purchase order.
+     * The product that belong to the sale order.
      */
     public function product()
     {

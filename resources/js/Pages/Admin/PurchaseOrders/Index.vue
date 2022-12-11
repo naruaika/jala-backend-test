@@ -19,7 +19,7 @@ defineProps(['products', 'purchaseOrders', 'permissions']);
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <CreatePurchaseOrderForm v-show="permissions.create" :products="products" />
 
-                <PurchaseOrderListTable :purchaseOrders="purchaseOrders" />
+                <PurchaseOrderListTable :purchase-orders="purchaseOrders" />
             </div>
         </div>
     </AuthenticatedLayout>
