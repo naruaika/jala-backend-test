@@ -38,7 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sale-orders', [SaleOrderController::class, 'index'])->name('sale-orders.index');
     Route::post('/sale-orders', [SaleOrderController::class, 'store'])->name('sale-orders.store');
 
-    Route::prefix('admin')->group(function () {
+    Route::middleware('admin')->prefix('admin')->group(function () {
         Route::resource('products', AdminProductController::class)
             ->only(['index', 'store'])
             ->names([
