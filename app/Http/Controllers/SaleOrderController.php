@@ -35,6 +35,7 @@ class SaleOrderController extends Controller
                 ->get(),
             'saleOrders' => SaleOrder::query()
                 ->select('customer_name', 'price', 'status', 'created_at')
+                ->where('created_by', auth()->user()->id)
                 ->latest()
                 ->get(),
             'permissions' => [
