@@ -54,3 +54,7 @@ To run the application tests, you can execute below command:
 ```sh
 php artisan test
 ```
+
+## To-dos
+
+- Improve system logging
