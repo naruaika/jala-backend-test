@@ -29,7 +29,6 @@ class PurchaseOrderController extends Controller
         return Inertia::render('Admin/PurchaseOrders/Index', [
             'products' => Product::query()
                 ->select('sku', 'name', 'price', 'stock')
-                ->where('stock', '>', 0)
                 ->orderBy('sku')
                 ->get(),
             'purchaseOrders' => PurchaseOrder::query()
